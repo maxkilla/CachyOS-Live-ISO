@@ -118,7 +118,6 @@ nbd
 ndisc6
 net-tools
 networkmanager
-networkmanager-iwd
 nfs-utils
 nilfs-utils
 nmap
