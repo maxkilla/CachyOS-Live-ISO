@@ -108,3 +108,26 @@ When = PostTransaction
 Exec = /usr/local/bin/rebuild-mbp-touchbar.sh
 NeedsTargets
 EOF
+
+#### Audio: Cirrus CS8409 codec driver (DKMS) ###############################
+
+# davidjo/snd_hda_macbookpro patches the in-kernel snd-hda-codec-cs8409 driver
+# for the CS8409/CS42L83 codec used in this MacBook's speakers/headphones/mic.
+# It ships as a DKMS module, so register+build it via dkms directly (rather
+# than the repo's install.cirrus.driver.sh dkms.sh wrapper, which runs
+# `dkms install` without -k and would target the build host's running kernel
+# instead of ${KVER}). dkms.conf's PRE_BUILD re-invokes
+# install.cirrus.driver.sh -k $kernelver --dkms, and dkms sets $kernelver from
+# our -k argument, so the source patching step also targets ${KVER}/${KDIR}.
+# AUTOINSTALL="yes" in dkms.conf + the dkms package's own pacman hook handles
+# rebuilds on future linux-cachyos/-headers upgrades, so no extra hook needed.
+
+src=/usr/src/snd_hda_macbookpro-0.1
+git clone --depth 1 https://github.com/davidjo/snd_hda_macbookpro "${src}"
+
+# Same clang/LLVM toolchain requirement as the Touch Bar driver above.
+sed -i 's/^MAKE="make"$/MAKE="make LLVM=1"/' "${src}/dkms.conf"
+
+dkms add -m snd_hda_macbookpro -v 0.1
+dkms build -m snd_hda_macbookpro -v 0.1 -k "${KVER}"
+dkms install -m snd_hda_macbookpro -v 0.1 -k "${KVER}" --force
