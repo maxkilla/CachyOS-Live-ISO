@@ -29,6 +29,7 @@ cachyos-v3-mirrorlist
 cachyos-v4-mirrorlist
 chwd
 ckbcomp
+clang
 clonezilla
 cloud-init
 cryptsetup
@@ -94,6 +95,8 @@ linux-cachyos-nvidia-open
 linux-cachyos-zfs
 linux-firmware
 linux-firmware-marvell
+lld
+llvm
 lsb-release
 lsof
 lsscsi

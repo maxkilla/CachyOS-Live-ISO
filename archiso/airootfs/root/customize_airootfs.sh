@@ -32,8 +32,11 @@ echo "==> Building MacBook drivers for kernel ${KVER}"
 src=/usr/src/mbp-t1-touchbar-driver
 git clone --depth 1 https://github.com/parport0/mbp-t1-touchbar-driver "${src}"
 
-make -C "${KDIR}" M="${src}" modules
-make -C "${KDIR}" M="${src}" INSTALL_MOD_PATH=/ modules_install
+# linux-cachyos is built with clang/LLVM (ThinLTO); gcc rejects the
+# clang-only flags recorded in the kernel's build config, so build out-of-tree
+# modules with the matching toolchain via LLVM=1.
+make LLVM=1 -C "${KDIR}" M="${src}" modules
+make LLVM=1 -C "${KDIR}" M="${src}" INSTALL_MOD_PATH=/ modules_install
 depmod "${KVER}"
 
 # apple-ibridge-hid / apple-ib-touchbar (mainline) conflict with the
@@ -85,9 +88,9 @@ fi
 KDIR="/usr/lib/modules/${KVER}/build"
 
 src=/usr/src/mbp-t1-touchbar-driver
-make -C "${KDIR}" M="${src}" clean
-make -C "${KDIR}" M="${src}" modules
-make -C "${KDIR}" M="${src}" INSTALL_MOD_PATH=/ modules_install
+make LLVM=1 -C "${KDIR}" M="${src}" clean
+make LLVM=1 -C "${KDIR}" M="${src}" modules
+make LLVM=1 -C "${KDIR}" M="${src}" INSTALL_MOD_PATH=/ modules_install
 depmod "${KVER}"
 EOF
 
