@@ -36,6 +36,7 @@ darkhttpd
 ddrescue
 dhcpcd
 diffutils
+dkms
 dmidecode
 dmraid
 dnsmasq
@@ -52,6 +53,7 @@ fakeroot
 fatresize
 firefox
 gcc
+git
 gpart
 gparted
 gptfdisk
@@ -87,6 +89,7 @@ linux-cachyos-lts
 linux-cachyos-lts-zfs
 linux-cachyos-lts-nvidia-open
 linux-cachyos
+linux-cachyos-headers
 linux-cachyos-nvidia-open
 linux-cachyos-zfs
 linux-firmware
@@ -96,6 +99,7 @@ lsof
 lsscsi
 lvm2
 lynx
+make
 mc
 mdadm
 memtest86+
@@ -114,6 +118,7 @@ nbd
 ndisc6
 net-tools
 networkmanager
+networkmanager-iwd
 nfs-utils
 nilfs-utils
 nmap
@@ -137,6 +142,7 @@ parted
 partimage
 partitionmanager
 paru
+patch
 pcsclite
 pipewire
 pipewire-alsa
