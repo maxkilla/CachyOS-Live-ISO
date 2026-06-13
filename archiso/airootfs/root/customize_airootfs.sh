@@ -128,6 +128,13 @@ git clone --depth 1 https://github.com/davidjo/snd_hda_macbookpro "${src}"
 # Same clang/LLVM toolchain requirement as the Touch Bar driver above.
 sed -i 's/^MAKE="make"$/MAKE="make LLVM=1"/' "${src}/dkms.conf"
 
+# Kernel 7.x moved sound/pci/hda -> sound/hda/codecs/cirrus, so the patched
+# driver now builds into build/hda/codecs/cirrus/snd-hda-codec-cs8409.ko, but
+# dkms.conf's BUILT_MODULE_LOCATION still points at the old flat build/hda
+# layout. Without this, the build itself succeeds but dkms can't find the
+# resulting .ko and reports "Build ... failed".
+sed -i 's#^BUILT_MODULE_LOCATION\[0\]="build/hda"$#BUILT_MODULE_LOCATION[0]="build/hda/codecs/cirrus"#' "${src}/dkms.conf"
+
 dkms add -m snd_hda_macbookpro -v 0.1
 if ! dkms build -m snd_hda_macbookpro -v 0.1 -k "${KVER}"; then
     cat "/var/lib/dkms/snd_hda_macbookpro/0.1/build/make.log" >&2 || true
