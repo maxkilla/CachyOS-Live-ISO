@@ -10,6 +10,8 @@ bash-completion
 bcachefs-tools
 bind
 bluedevil
+bluez
+bluez-utils
 bolt
 breeze-gtk
 brltty

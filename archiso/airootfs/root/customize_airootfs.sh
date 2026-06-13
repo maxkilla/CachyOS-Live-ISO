@@ -141,3 +141,12 @@ if ! dkms build -m snd_hda_macbookpro -v 0.1 -k "${KVER}"; then
     exit 1
 fi
 dkms install -m snd_hda_macbookpro -v 0.1 -k "${KVER}" --force
+
+#### Backlight: prefer i915 native backlight over generic ACPI video ########
+
+# On this MacBook, acpi_video0 otherwise wins over intel_backlight, leaving the
+# brightness keys/slider with very coarse steps or no effect. This carries into
+# the installed system, since Calamares runs grub-mkconfig against this file.
+if [[ -f /etc/default/grub ]] && ! grep -q 'acpi_backlight=' /etc/default/grub; then
+    sed -i 's/^\(GRUB_CMDLINE_LINUX_DEFAULT="[^"]*\)"/\1 acpi_backlight=native"/' /etc/default/grub
+fi

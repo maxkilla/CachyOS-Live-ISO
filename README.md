@@ -54,8 +54,15 @@ both the live environment and the installed system work out of the box:
 - **Audio (Cirrus CS8409/CS42L83 codec)**: `davidjo/snd_hda_macbookpro` patch to
   the in-kernel `snd-hda-codec-cs8409` driver, installed via DKMS (auto-rebuilds
   on kernel upgrades).
+- **Keyboard/trackpad (SPI)**: already covered by `linux-cachyos`'s in-tree
+  `applespi`/`spi-pxa2xx` modules -- no extra driver needed.
+- **Backlight**: `acpi_backlight=native` kernel parameter so brightness keys
+  and the slider control `intel_backlight` instead of the coarser generic
+  ACPI video interface.
+- **Bluetooth**: `bluez`/`bluez-utils` added explicitly for the BCM43602
+  combo chip's Bluetooth side (`btusb` + `linux-firmware`).
 
-All of the above is built from source inside `archiso/airootfs/root/customize_airootfs.sh`
+All of the above is built/configured inside `archiso/airootfs/root/customize_airootfs.sh`
 during the ISO build (see `.github/workflows/build.yml`, runnable on demand via
 `workflow_dispatch`).
 
