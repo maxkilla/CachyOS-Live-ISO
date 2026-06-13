@@ -129,5 +129,8 @@ git clone --depth 1 https://github.com/davidjo/snd_hda_macbookpro "${src}"
 sed -i 's/^MAKE="make"$/MAKE="make LLVM=1"/' "${src}/dkms.conf"
 
 dkms add -m snd_hda_macbookpro -v 0.1
-dkms build -m snd_hda_macbookpro -v 0.1 -k "${KVER}"
+if ! dkms build -m snd_hda_macbookpro -v 0.1 -k "${KVER}"; then
+    cat "/var/lib/dkms/snd_hda_macbookpro/0.1/build/make.log" >&2 || true
+    exit 1
+fi
 dkms install -m snd_hda_macbookpro -v 0.1 -k "${KVER}" --force
