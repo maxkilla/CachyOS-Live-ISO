@@ -160,4 +160,5 @@ src=/usr/src/mbpfan
 git clone --depth 1 https://github.com/linux-on-mac/mbpfan "${src}"
 make -C "${src}"
 make -C "${src}" PREFIX=/usr install
+install -Dm644 "${src}/mbpfan.service" /usr/lib/systemd/system/mbpfan.service
 systemctl enable mbpfan
