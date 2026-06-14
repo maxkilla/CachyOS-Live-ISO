@@ -150,3 +150,14 @@ dkms install -m snd_hda_macbookpro -v 0.1 -k "${KVER}" --force
 if [[ -f /etc/default/grub ]] && ! grep -q 'acpi_backlight=' /etc/default/grub; then
     sed -i 's/^\(GRUB_CMDLINE_LINUX_DEFAULT="[^"]*\)"/\1 acpi_backlight=native"/' /etc/default/grub
 fi
+
+#### Fan control daemon #######################################################
+
+# mbpfan controls the fans on MacBooks based on core temperature, since the
+# firmware's built-in curve is often too conservative. Build from source and
+# enable the systemd service so fans spin when needed.
+src=/usr/src/mbpfan
+git clone --depth 1 https://github.com/linux-on-mac/mbpfan "${src}"
+make -C "${src}"
+make -C "${src}" PREFIX=/usr install
+systemctl enable mbpfan

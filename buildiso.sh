@@ -57,7 +57,7 @@ shift $(($OPTIND - 1))
 
 timer_start=$(get_timer)
 
-#check_root "$0" "${orig_argv[@]}"
+check_root "$0" "${orig_argv[@]}"
 
 # Build ISO in RAM if RAM amount is greater than 23GB. This would speed up build process and extend disk lifetime 
 if [[ "$build_in_ram" == "true" ]] && [[ $(grep MemTotal /proc/meminfo | awk '{print int($2/1024/1024)}') -gt 23 ]]; then

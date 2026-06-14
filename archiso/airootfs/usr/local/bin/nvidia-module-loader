@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 # Quick pass if one of the modules is already loaded.
 if [[ -e /sys/module/nvidia || -e /sys/module/nouveau ]]; then
     exit 0
